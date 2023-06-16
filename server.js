@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -7,20 +10,15 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const names = require("./babyNamesData.json");
+const names = require("./db_config.js");
 
 app.get("/", (req, res) => {
   res.send("Andriana's Baby name server");
 });
 
-// GET ALL NAMES
-app.get("/names", (req, res) => {
-  res.status(200).json(names);
-});
-
 // SEARCH NAMES
-app.get("/names/search", (req, res) => {
-  const searchName = req.query.name;
+app.get("/names", (req, res) => {
+  const searchName = req.query.name || "";
   //   console.log(searchName);
 
   let nameResults = names.filter((eachName) => {
