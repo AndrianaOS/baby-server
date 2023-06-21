@@ -30,7 +30,6 @@ app.get("/names", (req, res) => {
       if (result.rowCount === 0) {
         res.status(400).json({ error: "Names does not exist in this list" });
       } else {
-        console.log(result.rows);
         const allResults = result.rows.filter((eachName) => {
           return eachName.name.toLowerCase().includes(searchName.toLowerCase());
         });
@@ -45,8 +44,6 @@ app.get("/names", (req, res) => {
 
 // POST NAMES
 app.post("/name", (req, res) => {
-  // const { name, sex } = req.body;
-
   const newName = req.body.name;
   const newSex = req.body.sex;
 
@@ -64,44 +61,13 @@ app.post("/name", (req, res) => {
         return names.query(postNameQuery, [newName, newSex]);
       }
     })
-    .then((result) => {
-      console.log(result.rows);
+    .then(() => {
       res.status(200).json({ message: "New name added" });
     })
     .catch((err) => {
       console.log(err);
       res.status(400).json(err.error);
     });
-
-  // if(nameResults.rowCount > 0) {
-
-  // } else if (!newName || !newSex) {
-  //   throw {error: "Please fill in all fields"}
-  // }
-
-  // res.status(200).json({ message: "New name added" });
-  // const newID = names.length + 20;
-  // //   console.log(newID);
-
-  // const newName = {
-  //   id: newID,
-  //   name,
-  //   sex,
-  // };
-
-  // if (!newName.name || !newName.sex) {
-  //   return res.status(400).json({ error: "Please fill all fields" });
-  // }
-
-  // for (let eachName of names) {
-  //   // console.log(eachName.name);
-  //   if (eachName.name === newName.name) {
-  //     return res.status(400).json({ error: "Name already exists" });
-  //   }
-  // }
-
-  // names.push(newName);
-  // res.status(200).json({ message: "New name added", newName, names });
 });
 
 app.listen(port, () => {
